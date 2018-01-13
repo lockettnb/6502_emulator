@@ -1,0 +1,65 @@
+
+
+------------------------------------------------------------------
+#include <signal.h>
+
+static volatile int keepRunning = 1;
+
+void intHandler(int dummy) {
+    keepRunning = 0;
+}
+
+// ...
+
+int main(void) {
+
+   signal(SIGINT, intHandler);
+
+   while (keepRunning) { 
+      // ...
+
+------------------------------------------------------------------
+#include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
+
+void sig_handler(int);
+
+int main() {
+    signal(SIGSEGV, sig_handler);
+    int *p = NULL;
+    return *p;
+}
+
+void sig_handler(int sig) {
+    switch (sig) {
+    case SIGSEGV:
+        fprintf(stderr, "give out a backtrace or something...\n");
+        abort();
+    default:
+        fprintf(stderr, "wasn't expecting that!\n");
+        abort();
+    }
+}
+------------------------------------------------------------------
+#include<stdio.h>
+#include<signal.h>
+#include<unistd.h>
+
+void sig_handler(int signo)
+{
+  if (signo == SIGINT)
+    printf("received SIGINT\n");
+}
+
+int main(void)
+{
+  if (signal(SIGINT, sig_handler) == SIG_ERR)
+  printf("\ncan't catch SIGINT\n");
+  // A long long wait so that we can easily issue a signal to this process
+  while(1) 
+    sleep(1);
+  return 0;
+}
+
+

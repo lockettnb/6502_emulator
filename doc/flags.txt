@@ -1,0 +1,40 @@
+THE STATUS REGISTER
+
+    This register consists of eight "flags" (a flag = something that indi-
+  cates whether something has, or has not occurred). Bits of this register
+  are altered depending on the result of arithmetic and logical operations.
+  These bits are described below:
+
+     Bit No.       7   6   5   4   3   2   1   0
+                   S   V       B   D   I   Z   C
+
+   Bit0 - C - Carry flag: this holds the carry out of the most significant
+   bit in any arithmetic operation. In subtraction operations however, this
+   flag is cleared - set to 0 - if a borrow is required, set to 1 - if no
+   borrow is required. The carry flag is also used in shift and rotate
+   logical operations.
+
+   Bit1 - Z - Zero flag: this is set to 1 when any arithmetic or logical
+   operation produces a zero result.
+
+   Bit 2 - I: this is an interrupt enable/disable flag. If it is set,
+   interrupts are disabled. If it is cleared, interrupts are enabled.
+
+   Bit 3 - D: this is the decimal mode status flag. When set, and an Add with
+   Carry or Subtract with Carry instruction is executed, the source values are
+   treated as valid BCD (Binary Coded Decimal, eg. 0x00-0x99 = 0-99) numbers.
+   The result generated is also a BCD number.
+
+   Bit 4 - B: this is set when a software interrupt (BRK instruction) is
+   executed.
+
+   Bit 5: not used. Supposed to be logical 1 at all times.
+
+   Bit 6 - V - Overflow flag: when an arithmetic operation produces a result
+   too large to be represented in a byte, V is set.
+
+   Bit 7 - N - Negitive flag: this is set if the result of an operation is
+   negative, cleared if positive.
+
+
+

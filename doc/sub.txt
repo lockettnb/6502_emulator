@@ -1,0 +1,49 @@
+Subtraction on the 6502
+The behavior of the overflow flag is fundamentally the same for subtraction,
+indicating that the result doesn't fit into the signed byte range -128 to 127.
+The 6502 has a SBC operation (subtract with carry) that subtracts two numbers
+and also subtracts the borrow bit. If the (unsigned) operation results in a
+borrow (is negative), then the borrow bit is set. However, there is no explicit
+borrow flag - instead the complement of the carry flag is used. If the carry
+flag is 1, then borrow is 0, and if the carry flag is 0, then borrow is 1. This
+behavior may seem backwards, but note that both for addition and subtraction,
+if the carry flag is set, the output is one more than if the carry flag is
+clear.
+
+Defining the borrow bit in this way makes the hardware implementation simple.
+SBC simply takes the ones complement of the second value and then performs an
+ADC. To see how this works, consider M minus N minus borrow B.
+
+M - N - B	SBC of M and N with borrow B
+→ M - N - B + 256	Add 256, which doesn't change the 8-bit value.
+= M - N - (1-C) + 256	Replace B with the inverted carry flag.
+= M + (255-N) + C	Simple algebra.
+= M + (ones complement of N) + C	255 - N is the same as flipping the bits.
+
+The following table shows the overflow cases for subtraction. It is similar to
+the previous table, with the addition of the B column that indicates if a
+borrow resulted. Unsigned operation resulting in borrow are shown in red, as
+are signed operations that result in an overflow.
+
+Inputs	Outputs		Example
+M7 	N7 	C6 	C7 	B	S7 	V	Borrow / Overflow	Hex	Unsigned	Signed
+0	1	0	0	1	0	0	Unsigned borrow but no signed overflow	0x50-0xf0=0x60	80-240=96	80--16=96
+0	1	1	0	1	1	1	Unsigned borrow and signed overflow	0x50-0xb0=0xa0	80-176=160	80--80=-96
+0	0	0	0	1	1	0	Unsigned borrow but no signed overflow	0x50-0x70=0xe0	80-112=224	80-112=-32
+0	0	1	1	0	0	0	No unsigned borrow or signed overflow	0x50-0x30=0x120	80-48=32	80-48=32
+1	1	0	0	1	1	0	Unsigned borrow but no signed overflow	0xd0-0xf0=0xe0	208-240=224	-48--16=-32
+1	1	1	1	0	0	0	No unsigned borrow or signed overflow	0xd0-0xb0=0x120	208-176=32	-48--80=32
+1	0	0	1	0	0	1	No unsigned borrow but signed overflow	0xd0-0x70=0x160	208-112=96	-48-112=96
+1	0	1	1	0	1	0	No unsigned borrow or signed overflow	0xd0-0x30=0x1a0	208-48=160	-48-48=-96
+
+Comparing the above table with the overflow table for addition shows the tables
+are structurally similar if you take the ones-complement of N into account. As
+with addition, two of the rows result in overflow. However, some things are
+reversed compared with addition. Overflow can only occur when subtracting a
+positive number from a negative number or vice versa. Subtracting positive from
+positive or negative from negative is guaranteed not to overflow.
+
+The formulas for overflow during addition given earlier all work for
+subtraction, as long as the second argument (N) is ones-complemented. Since
+internall subtraction is just addition of the ones-complement, N can simply be
+replaced by 255-N in the formulas. 
