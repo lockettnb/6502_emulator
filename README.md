@@ -4,7 +4,10 @@
 This program provides a 6502 emulation for both a generic 6502 and for
 Ohio Scientific C3 computer.  The generic mode has a flat 64k for memory
 space with no devices or rom.  A monitor is provided to load object files
-into memory and run them.  The monitor also provides:
+into memory and run them.
+
+The monitor also provides:
+
     + disassemble
     + set/display memory
     + set/display cpu registers
