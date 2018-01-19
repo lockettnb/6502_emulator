@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <regex.h>
-#include "e6502.h"
+#include "emulator.h"
 
 char *opcodes[] =
      {

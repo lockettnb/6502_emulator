@@ -16,7 +16,7 @@ extern int sentinel;        // sigint sentinal MOVE TO util.h
     void sigint_restore(void);
 
 // print help and instructions
-    void inst(char *iptr[], int status);
+    void display_help(char *iptr[], int status);
 
 // load the binary file into the memory buffer
     int load_file(FILE *fp, char *fname, int addr);

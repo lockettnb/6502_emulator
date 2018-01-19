@@ -18,7 +18,7 @@
 // regular expressions
 #include <regex.h>
 
-#include "e6502.h"
+#include "emulator.h"
 
 // Globals used for tty and signals
 int sentinel = FALSE;
@@ -155,7 +155,7 @@ int i;
 
 // ******************************************************************
 // Print Usage Instructions
-void inst(char *iptr[], int status)
+void display_help(char *iptr[], int status)
 {
 if(status != 0)
     fprintf(stderr,"Try, %s --help for more information.\n", program_name);
@@ -197,7 +197,9 @@ int tty_raw(int fd)
 
     buf.c_oflag &= ~ (OPOST);
 
-    buf.c_cc[VMIN] = 1;
+//     buf.c_cc[VMIN] = 1;
+// set VMIN and VTIME to zero for non-blocking reads
+    buf.c_cc[VMIN] = 0;
     buf.c_cc[VTIME]= 0;
 
     if (tcsetattr(fd, TCSAFLUSH, &buf) < 0)

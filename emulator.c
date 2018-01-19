@@ -8,7 +8,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <getopt.h>
-#include "e6502.h"
+#include "emulator.h"
+#include "opcodes.h"
 #include "console.h"
 
 // message logging, change to suit, default is to output message to stdin
@@ -20,10 +21,10 @@
 
 
 // global variables
-struct CPU_state cpu;
-uint8_t memory[MEMORY_SIZE];
-struct device dev[DEVMAX];
-int    mode=GENERIC;
+static struct CPU_state cpu;        // the 6502 registers
+uint8_t memory[MEMORY_SIZE];        // array of bytes for RAM memory
+struct device dev[DEVMAX];          // array of devices.... memory, console, floppy etc
+int    mode=GENERIC;                // system emulation mode, generic or OSI
 
 
 // OSI synmon ROM three pages (0xffd0, 0xffe0, -xfff0)
@@ -88,7 +89,7 @@ void memory_write(uint16_t address, uint8_t byte)
 
 void memory_halt(void)
 {
-    LOG("synmon ROM halt\n");
+    LOG("RAM memory shutting down....\n");
 }
 
 
@@ -115,13 +116,13 @@ void rom_init(void)
 }
 
 void rom_halt(void) {
-    LOG("synmon ROM halt\n");
+    LOG("synmon ROM shutting down\n");
 }
 
 
 //******************************************************************
 //
-//  device Routines
+//  floppy device Routines
 //
 void floppy_init(void) {
     LOG("floppy init\n");
@@ -136,9 +137,11 @@ void floppy_write(uint16_t address, uint8_t byte) {
 void floppy_halt(void) {
     LOG("floppy halt\n");
 }
+
+
+
 //******************************************************************
-
-
+// initalize the memory map to match generic or osi system emulation
 void init_memory_map(void)
 {
  int i;
@@ -156,7 +159,7 @@ void init_memory_map(void)
         dev[i].halt = NULL;
     }
 
-  // generic 6502 with 64k of memory
+  // generic system with 64k of memory
     if(mode == GENERIC) {
         dev[0].start=0;
         dev[0].end=0xffff;
@@ -206,7 +209,84 @@ void init_memory_map(void)
 
 
 
-void emulation_init(int initmode)
+// ******************************************************************
+// get copy of all cpu registers
+void get_registers(struct CPU_state regs)
+{
+  regs.pc=cpu.pc;
+  regs.sp=cpu.sp;
+  regs.a=cpu.a;
+  regs.x=cpu.x;
+  regs.y=cpu.y;
+  regs.p=cpu.p;
+}
+
+uint8_t get_reg(Register reg)
+{
+
+
+}
+
+void    set_reg(Register reg, int value)
+{
+
+    switch (reg) {
+     case PC:
+        cpu.pc = value;
+      break;
+     case SP:
+        cpu.sp = value;
+      break;
+    case A:
+        cpu.a = value;    
+      break;
+    case X:
+        cpu.x = value;
+      break;
+     case Y:
+        cpu.y = value;
+      break;
+     case P:
+        cpu.p = value;
+      break;
+    }
+}
+
+
+// ******************************************************************
+// fix this to read console and floppy status not cpu
+//
+void get_device(void *p, device_t x)
+{
+  ((struct CPU_state*)p)->pc=cpu.pc;
+  ((struct CPU_state*)p)->sp=cpu.sp;
+  ((struct CPU_state*)p)->a=cpu.a;
+  ((struct CPU_state*)p)->x=cpu.x;
+  ((struct CPU_state*)p)->y=cpu.y;
+  ((struct CPU_state*)p)->p=cpu.p;
+}
+
+// ******************************************************************
+// get/set flags
+//
+int get_flag(int f )
+{
+    
+    return GETFLAG(f);
+}
+
+void set_flag(int f, int value)
+{
+
+    SETFLAG(f, value);
+}
+
+// ******************************************************************
+// emulation initialization 
+//
+//  +sets mode to generic of osi
+//  +setup memory map to match mode
+void em_init(int initmode)
 {
  int i;
     mode=initmode;
@@ -226,7 +306,27 @@ void emulation_init(int initmode)
     SETFLAG(X_FLAG, 1);
 }
 
+// ******************************************************************
+// emulation RESET 
+//  +set program counter PC to reset vector
+//  +set cpu A,X, Y registers to zero 
+//  +set stackh to $01FF
+//  +set flags to zero except the X flag
+//
+//  +sets mode to generic of osi
+void em_reset(void)
+{
+        cpu.pc=mread(0xfffc) + (mread(0xfffd)<<8);
+        cpu.sp=0xff;
+        cpu.a=0;
+        cpu.x=0;
+        cpu.y=0;
+        cpu.p=0;
+        SETFLAG(X_FLAG, 1);
+}
 
+
+// ******************************************************************
 // memory read, lookup devie at address and call device read function
 uint8_t mread(uint16_t address)
 {
@@ -246,6 +346,7 @@ uint8_t mread(uint16_t address)
 }
 
 
+// ******************************************************************
 // memory write, lookup devie at address and call device write function
 void mwrite(uint16_t address, uint8_t byte)
 {
@@ -263,6 +364,7 @@ void mwrite(uint16_t address, uint8_t byte)
 }
 
 
+// ******************************************************************
 // invalid instructions, we print error and skip over it
 void invalid_instruction(struct CPU_state *cpu)
 {
@@ -272,7 +374,11 @@ void invalid_instruction(struct CPU_state *cpu)
 
 
 
-int execute(void)
+// ******************************************************************
+// .... finally here is the 6502 magic
+//  + execute one instruction
+//  + return the size of the opcode/instruction
+int em_exec(void)
 {
  int rc=0;               // return codes 0=instruction ok, 1=break
  int cycles = 4;

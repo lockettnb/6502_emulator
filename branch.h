@@ -103,12 +103,13 @@
                 break;
 
      case RTS: // return from subroutine 
-                cpu.pc = mread(++cpu.sp+STACK) + read(++cpu.sp+STACK)<<8 ;
-                cpu.pc++; 
+                cpu.pc = mread(++cpu.sp+STACK) + (mread(++cpu.sp+STACK)<<8) ;
+                cpu.pc+=3; 
                 break;
 
      case RTI: // return from interrupt 
                 cpu.p = mread(++cpu.sp+STACK);
-                cpu.pc = mread(++cpu.sp+STACK) + read(++cpu.sp+STACK)<<8 ;
+                cpu.pc = mread(++cpu.sp+STACK) + (mread(++cpu.sp+STACK)<<8) ;
+                // should pc be incremented??
                 break;
 
