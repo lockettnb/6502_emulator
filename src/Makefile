@@ -7,25 +7,26 @@
 CFLAGS =  -g
 CC = gcc
 
+BUILD	= ../build
 INSTALL_DIR = /home/john/bin
 MANPATH=/usr/local/man/man1
 
-SRCS	= disassembler.c emulator.c utils.c monitor.c console.c
-BINS	= m6502
-OBJS	= disassembler.o emulator.o utils.o monitor.o console.o
+SRCS	= disassembler.c emulator.c utils.c monitor.c console.c floppy.c
+BIN		= $(addprefix $(BUILD)/,m6502)
+OBJS	= $(addprefix $(BUILD)/, disassembler.o emulator.o utils.o monitor.o console.o floppy.o)
 MANSRC  = 
 MANFILE	= 
 HEAD	= 
 LIBS	= -lreadline
 INCS 	:= $(wildcard *.h)
 
-all: $(BINS)
+all: m6502 
 
 m6502: $(SRCS) $(OBJS) $(INCS) 
-	$(CC) -o m6502 $(CFLAGS) $(OBJS) $(LIBS)
+	$(CC) -o $(BIN) $(CFLAGS) $(OBJS) $(LIBS)
 
 
-%.o: %.c $(INCS)
+$(BUILD)/%.o: %.c $(INCS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 clean:

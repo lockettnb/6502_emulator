@@ -12,7 +12,7 @@
 #define LOG(fmt, ...)  printf(fmt, ##__VA_ARGS__ )
 
 
-static struct Acia console;
+static Acia console;
 
 
 // receive serial input from external source 
@@ -149,7 +149,7 @@ void console_halt(void)
 }
 
 
-void console_status(struct Acia *a6850)
+void console_status(Acia *a6850)
 {
 
      a6850->cr=console.cr;             // control register
@@ -188,41 +188,4 @@ int parity(int x, int size)
     }
     return (0 == (p & 0x1));
 }
-
-
-// MC6850 CONTROL REGISTER (cr)
-//  7    Receive Interrupt (1=Enable on buffer full/buffer overrun)
-//  5-6  Transmit Interrupt/RTS/Break control (0..3)
-//        00 = Output /RTS=low,  and disable Tx Interrupt
-//        01 = Output /RTS=low,  and enable Tx Interrupt
-//        10 = Output /RTS=high, and disable Tx Interrupt
-//        11 = Output /RTS=low,  and disable Tx Interrupt, and send a Break
-//  2-4  Mode (0..7 = 7e2,7o2,7e1,7o1,8n2,8n1,8e1,8o1) (data/stop bits, parity)
-//        000 - 7 bit, even, 2 stop bit
-//        001 - 7 bit, odd, 2 stop bit
-//        010 - 7 bit, even, 1 stop bit
-//        011 - 7 bit, odd, 1 stop bit
-//        100 - 8 bit, 2 stop bit
-//        101 - 8 bit, 1 stop bit
-//        110 - 8 bit, even, 1 stop bit
-//        111 - 8 bit, odd, 1 stop bit
-//  0-1  Baudrate (0=CLK/64, 1=CLK/16, 2=CLK/1, 3=RESET)
-//        00 - Normal
-//        01 - Div by 16
-//        10 - Div by 64
-//        11 - Master reset
-// 
-// MC6850 STATUS REGISTER (sr)
-// 
-//  7    Interrupt Request (console ACIA IRQ pin is not connected)
-//  6    Receive Parity Error  (1=Error)
-//  5    Receive Overrun Error (1=Error)
-//  4    Receive Framing Error (1=Error)
-//  3    CTS level
-//  2    DCD level
-//  1    Transmit Data (0=Busy, 1=Ready/Empty)
-//  0    Receive Data  (0=No data, 1=Data can be read)
-// 
-// + data can be read when Status Bit0=1
-// + data can be written when Status Bit1=1
 

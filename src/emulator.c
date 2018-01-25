@@ -11,6 +11,7 @@
 #include "emulator.h"
 #include "opcodes.h"
 #include "console.h"
+#include "floppy.h"
 
 // message logging, change to suit, default is to output message to stdin
 // the ## tells cpp to remove the previous comas if only one argument is passed
@@ -119,24 +120,6 @@ void rom_halt(void) {
     LOG("synmon ROM shutting down\n");
 }
 
-
-//******************************************************************
-//
-//  floppy device Routines
-//
-void floppy_init(void) {
-    LOG("floppy init\n");
-}
-uint8_t floppy_read(uint16_t address) {
-    LOG("floppy read\n");
-    return (0);
-}
-void floppy_write(uint16_t address, uint8_t byte) {
-    LOG("floppy write\n");
-}
-void floppy_halt(void) {
-    LOG("floppy halt\n");
-}
 
 
 

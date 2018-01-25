@@ -36,9 +36,9 @@ char trace_buffer[TRACEMAX][TRACELEN];
 int  trace_head;
 int  trace_tail;
 
-struct CPU_state em_cpu;         // 6502 CPU registers
-struct Acia      em_console;     // console 6850 ACIA device
-device_t         em_device;      // emunumeration of devices
+struct    CPU_state em_cpu;         // 6502 CPU registers
+Acia      em_console;     // console 6850 ACIA device
+device_t  em_device;      // emunumeration of devices
 
 
 /* Option Flags set by `--options' */
@@ -71,7 +71,7 @@ void trace_clear(void);
 void trace_append(char *newline);
 void trace_print(int count);
 void register_status(char result[]);
-void display_console_status(struct Acia console);
+void display_console_status(Acia console);
 
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -440,7 +440,7 @@ return(0);
 int xinfo(char *arg[])
 {
  int i;
- struct Acia console;
+ Acia console;
 
     if(strcmp(arg[0],"break") == 0) {
         printf(">>break information\n");
@@ -782,7 +782,7 @@ void register_status(char result[])
 }
 
 
-void display_console_status(struct Acia console)
+void display_console_status(Acia console)
 {
  char bits[32];
 

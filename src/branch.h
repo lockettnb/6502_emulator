@@ -97,14 +97,13 @@
 
      case JSR_AB: // call -- jump subroutine 
                   //  save PC hi, dec sp, save PC low, dec sp
-                mwrite(STACK + cpu.sp--, (cpu.pc)>>8 & 0xff);
-                mwrite(STACK + cpu.sp--, cpu.pc & 0xff);
+                mwrite(STACK + cpu.sp--, (cpu.pc+3)>>8 & 0xff);
+                mwrite(STACK + cpu.sp--, (cpu.pc+3) & 0xff);
                 cpu.pc = AB(0);
                 break;
 
      case RTS: // return from subroutine 
                 cpu.pc = mread(++cpu.sp+STACK) + (mread(++cpu.sp+STACK)<<8) ;
-                cpu.pc+=3; 
                 break;
 
      case RTI: // return from interrupt 
