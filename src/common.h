@@ -7,6 +7,8 @@
 
 #define UNUSED(expr) do { (void)(expr); } while (0)
 
+#define LOG(fmt, ...)  printf(fmt, ##__VA_ARGS__ )
+
 #define NULL_CHAR '\0'
 
 #define TRUE -1

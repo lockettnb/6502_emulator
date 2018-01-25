@@ -6,10 +6,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+
+#include "../common.h"
 #include "console.h"
 
 
-#define LOG(fmt, ...)  printf(fmt, ##__VA_ARGS__ )
 
 
 static Acia console;

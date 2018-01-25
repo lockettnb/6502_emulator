@@ -2,7 +2,7 @@
 // 2018/01/01 
 //
 
-#include "hardware.h"
+#include "../hardware.h"
 
 #define NOPARITY   0
 #define EVENPARITY 1

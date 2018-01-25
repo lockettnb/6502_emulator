@@ -4,6 +4,7 @@
 #
 
 #CFLAGS =  -g -DDEBUG
+#CFLAGS =  -g -Wall
 CFLAGS =  -g
 CC = gcc
 
@@ -12,7 +13,7 @@ INSTALL_DIR = /home/john/bin
 MANPATH=/usr/local/man/man1
 
 SUBOBJS  = linenoise.o dumbterm.o
-SRCS	= disassembler.c emulator.c utils.c monitor.c console.c floppy.c
+SRCS	= disassembler.c emulator.c utils.c monitor.c floppy.c
 BIN		= $(addprefix $(BUILD)/,m6502)
 OBJS	= $(addprefix $(BUILD)/, disassembler.o emulator.o utils.o monitor.o console.o floppy.o linenoise.o filecomp.o)
 MANSRC  = 
@@ -25,6 +26,9 @@ all: m6502
 
 m6502: $(SRCS) $(OBJS) $(INCS) 
 	$(CC) -o $(BIN) $(CFLAGS) $(OBJS) $(LIBS)
+
+$(BUILD)/console.o: console/console.c console/console.h
+	make -C console/
 
 $(BUILD)/linenoise.o: ln/linenoise.c ln/linenoise.h
 	make -C ln/

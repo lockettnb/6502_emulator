@@ -18,7 +18,7 @@
 #include "common.h"
 #include "emulator.h"
 #include "utils.h"
-#include "console.h"
+#include "console/console.h"
 #include "ln/linenoise.h"
 #include "ln/filecomp.h"
 
@@ -650,8 +650,7 @@ main (int argc, char *argv[])
         }
 
         fclose(fp);
-
-    }
+    } // run command 
 
 
 
@@ -669,8 +668,8 @@ main (int argc, char *argv[])
             // I still do not understand the history_base value
             // history_get code subtracts it from the offset
 //             hlast= history_get(history_length-1+history_base);
-//             if(hlast != NULL) {
-//                 if(strcmp(hlast->line, trimline) !=0) {
+//             if(hlast != NULL) 
+//                 if(strcmp(hlast->line, trimline) !=0) 
 //                   linenoiseHistoryAdd(trimline);
                 linenoiseHistoryAdd(trimline);
         }
@@ -697,7 +696,9 @@ main (int argc, char *argv[])
     } else {
         printf("Environment HOME not set, no history file saved\n");
     }
+
     free (line);
+    return 0;
 } //main
 
 

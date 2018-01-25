@@ -10,7 +10,7 @@
 #include <getopt.h>
 #include "emulator.h"
 #include "opcodes.h"
-#include "console.h"
+#include "console/console.h"
 #include "floppy.h"
 
 // message logging, change to suit, default is to output message to stdin
