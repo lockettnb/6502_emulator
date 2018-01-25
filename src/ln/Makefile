@@ -1,10 +1,11 @@
-linenoise_example: linenoise.h linenoise.c
 
-linenoise_example: linenoise.c example.c
-	$(CC) -Wall -W -Os -g -o linenoise_example linenoise.c example.c
+BUILD 	= ../../build
 
-autoc: autoc.c linenoise.c
-	$(CC) -Wall -W -Os -g -o autoc linenoise.c autoc.c
+all: filecomp linenoise
 
-clean:
-	rm -f linenoise_example
+filecomp: filecomp.c filecomp.h 
+	$(CC) -Wall -W -g -c -o $(BUILD)/filecomp.o filecomp.c
+
+linenoise: linenoise.c linenoise.h
+	$(CC) -Wall -W -g -c -o $(BUILD)/linenoise.o linenoise.c
+

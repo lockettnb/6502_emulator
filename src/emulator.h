@@ -4,11 +4,6 @@
 //
 
 #define VERSION "0.42"
-#define NULL_CHAR '\0'
-#define TRUE -1
-#define FALSE 0
-#define SUCCESS 0
-#define FAIL 1
 
 // Emulator Memory Map definitions and structures
 #define MEMORY_SIZE 65536

@@ -1,10 +1,11 @@
-doc
-6850*
-zzbak
-tidbits
-xa*
-zxampels
 a.o65
-*.asm
+asm
+build
+doc
 tests
+tidbits
+xaasm
+xajohn
+zxampels
+zzbak
 

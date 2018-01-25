@@ -12,11 +12,15 @@
 #include <unistd.h>
 #include <getopt.h>
 
-#include <readline/readline.h>
-#include <readline/history.h>
+// #include <readline/readline.h>
+// #include <readline/history.h>
+
+#include "common.h"
 #include "emulator.h"
 #include "utils.h"
 #include "console.h"
+#include "ln/linenoise.h"
+#include "ln/filecomp.h"
 
 
 #define FILEMAX  256
@@ -510,17 +514,17 @@ return(0);
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 int xhistory(char *arg[])
 {
- HIST_ENTRY **hlist;
- int i;
-
-    printf(">>history\n");
-
-    hlist = history_list ();
-//    printf("length %i, offset xx, base %i\n", history_length, history_base); 
-    if (hlist)
-        for (i = 0; hlist[i]; i++)
-             printf ("%2i: %s\n", i , hlist[i]->line);
-
+//  HIST_ENTRY **hlist;
+//  int i;
+// 
+//     printf(">>history\n");
+// 
+//     hlist = history_list ();
+// //    printf("length %i, offset xx, base %i\n", history_length, history_base); 
+//     if (hlist)
+//         for (i = 0; hlist[i]; i++)
+//              printf ("%2i: %s\n", i , hlist[i]->line);
+// 
 return(0);
 }
 
@@ -569,7 +573,7 @@ main (int argc, char *argv[])
  const char *home;
  char historyfile[FILEMAX];
  int done = FALSE;
- HIST_ENTRY *hlast;
+//  HIST_ENTRY *hlast;
  FILE *fp;
  char linebuf[MAXLINE];
 
@@ -602,6 +606,11 @@ main (int argc, char *argv[])
         exit(0);
     }
 
+  // init command line file completetion and hints
+    linenoiseSetCompletionCallback(filecompletion);
+    linenoiseSetHintsCallback(filehints);
+    linenoiseHistorySetMaxLen(16);
+
   // initalize 6502 emulation
     em_init(OSI);
 
@@ -610,14 +619,14 @@ main (int argc, char *argv[])
     trace_clear();
 
   // initalize command line histroy 
-    using_history();
-    stifle_history (HISTMAX);
+//     using_history();
+//     stifle_history (HISTMAX);
     home = getenv("HOME");
     if(home != NULL) {
         sprintf(historyfile, "%s/.m6502history", home);
         printf("reading History File: %s\n", historyfile);
-        if(read_history(historyfile)!=0) 
-            add_history("hello");
+        if(linenoiseHistoryLoad(historyfile)!=0) 
+            linenoiseHistoryAdd("hello");
     } else {
         printf("Environment HOME not set, no history file\n");
     }
@@ -648,7 +657,7 @@ main (int argc, char *argv[])
 
   // loop reading and executing commands
     while (!done) {
-        line = readline ("M65> ");
+        line = linenoise("M65> ");
         if (line == NULL) { 
             fprintf(stderr, "Error: failed to read command line\n");
             exit(1);
@@ -659,12 +668,11 @@ main (int argc, char *argv[])
         if (*trimline) {    // add to history if not blank or duplicate
             // I still do not understand the history_base value
             // history_get code subtracts it from the offset
-            hlast= history_get(history_length-1+history_base);
-            if(hlast != NULL) {
-                if(strcmp(hlast->line, trimline) !=0) {
-                  add_history (trimline);
-                }
-            }
+//             hlast= history_get(history_length-1+history_base);
+//             if(hlast != NULL) {
+//                 if(strcmp(hlast->line, trimline) !=0) {
+//                   linenoiseHistoryAdd(trimline);
+                linenoiseHistoryAdd(trimline);
         }
 
         command = strtok(trimline," ");     // command should be the first thing
@@ -672,9 +680,9 @@ main (int argc, char *argv[])
             valid_cmd = dispatch(command, &done);
         } else {
             // if the line is blank, repeat last command
-            hlast = history_get(history_length-1+history_base);
-            if(hlast != NULL)
-               valid_cmd=dispatch(hlast->line, &done);
+//             hlast = history_get(history_length-1+history_base);
+//             if(hlast != NULL)
+//                valid_cmd=dispatch(hlast->line, &done);
         }
 
         if(! valid_cmd) printf(">> Error: unknown command \n");
@@ -685,7 +693,7 @@ main (int argc, char *argv[])
    // we are done clean up and save command line history
     if(home != NULL) {
         printf("writing history....%s\n", historyfile);
-        write_history(historyfile);
+        linenoiseHistorySave(historyfile);
     } else {
         printf("Environment HOME not set, no history file saved\n");
     }

@@ -13,6 +13,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <regex.h>
+
+#include "common.h"
 #include "emulator.h"
 
 char *opcodes[] =

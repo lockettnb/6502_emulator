@@ -18,6 +18,7 @@
 // regular expressions
 #include <regex.h>
 
+#include "common.h"
 #include "emulator.h"
 
 // Globals used for tty and signals
