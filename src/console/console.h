@@ -11,10 +11,8 @@
 #define  NO_TX_DATA 1024        // transmit data ready to send
                                 // return large value as we only send bytes 0..255 
 
-#define DISABLED    0
-#define ENABLED    1
-#define FALSE 0
-#define TRUE -1
+#define DISABLED  0
+#define ENABLED   1
 
 #define BITS(byt)  \
   (byt & 0x80 ? '1' : '0'), \
@@ -33,13 +31,13 @@ void    console_write(uint16_t address, uint8_t data);
 void    console_halt(void);
 
 // void    console_status(void);
-void    console_status(Acia *a6850);
+void  console_status(Acia *a6850);
 
 // these routine provide the virtual RS232 serial interface for the console
 //  + the external progarm (monitor.c in this case) is responsible for
 //  + actually sending/recieiving of the characters
-void    serial_in(char c);
-int     serial_out(void);
+int    serial_in(char *c);
+void   serial_out(char c);
 
 
 

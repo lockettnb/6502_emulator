@@ -16,7 +16,7 @@ HEAD	=
 LIBS	= 
 INCS 	:= $(wildcard *.h)
 
-all: ositerm console.o 
+all: ositerm console.o serial_test
 
 console.o: console.c $(INCS)
 	$(CC) -c -o $(BUILD)/console.o $(CFLAGS) console.c
@@ -24,8 +24,8 @@ console.o: console.c $(INCS)
 ositerm: $(SRCS) $(INCS)
 	$(CC) -o $(BUILD)/ositerm $(CFLAGS) ositerm.c 
 
-serial_test: $(SRCS)
-	$(CC) -o serial_test $(CFLAGS) serial_test.c 
+serial_test: serial_test.c 
+	$(CC) -o $(BUILD)/serial_test $(CFLAGS) serial_test.c 
 
 
 

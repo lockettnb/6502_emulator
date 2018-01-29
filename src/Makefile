@@ -22,12 +22,15 @@ HEAD	=
 LIBS	= -lreadline
 INCS 	:= $(wildcard *.h)
 
-all: m6502 
+all: m6502  ositerm
 
 m6502: $(SRCS) $(OBJS) $(INCS) 
 	$(CC) -o $(BIN) $(CFLAGS) $(OBJS) $(LIBS)
 
 $(BUILD)/console.o: console/console.c console/console.h
+	make -C console/
+
+ositerm: console/ositerm.c 
 	make -C console/
 
 $(BUILD)/linenoise.o: ln/linenoise.c ln/linenoise.h

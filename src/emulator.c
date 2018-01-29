@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <getopt.h>
+
+#include "common.h"
 #include "emulator.h"
 #include "opcodes.h"
 #include "console/console.h"
@@ -288,6 +290,23 @@ void em_init(int initmode)
     cpu.x=0;  cpu.y=0; cpu.p=0;
     SETFLAG(X_FLAG, 1);
 }
+
+// ******************************************************************
+// emulation shutdown 
+//
+void em_halt(void)
+{
+ int i;
+
+  // initalize the devices/memory 
+    for(i=0; i<DEVMAX; i++) {
+        if(dev[i].start == DEVEND) break;
+        LOG("halt device %i\n", i);
+        dev[i].halt();
+    }
+
+}
+
 
 // ******************************************************************
 // emulation RESET 

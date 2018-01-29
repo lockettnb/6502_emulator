@@ -27,8 +27,8 @@
 #define HISTMAX  24 
 #define BREAKMAX 12
 #define NOBREAK  99999
-#define TRACEMAX 26
-#define TRACELEN 80
+#define TRACEMAX 400 
+#define TRACELEN 128 
 #define  MAXLINE    256
 
 
@@ -253,10 +253,13 @@ int xtrace(char *arg[])
  int count = 20;
  int tail, head;
 
+printf("trace with arg0 %s", arg[0]);
     // if no address give use the program counter at the start
-    if (arg[0]) {
+    if (arg[0] != NULL) {
+printf("trace with count %i", count);
         count = strtol(arg[0], NULL, 16);
     } 
+printf("trace with count %i", count);
 
     trace_print(count);
 
@@ -286,6 +289,7 @@ return(0);
 int xquit(char *arg[])
 {
     printf(">>quit\n");
+    em_halt();
 
 return(-1);
 }
@@ -319,7 +323,7 @@ char ch = 0;
 
     printf("run starting at 0x%04x\n", em_cpu.pc);
     sigint_grab();
-    tty_raw(STDIN_FILENO);
+//     tty_raw(STDIN_FILENO);
     
     while(!done && !sentinel){
         disassemble(em_cpu.pc, traceline);
@@ -337,19 +341,19 @@ char ch = 0;
         if(rc != 0) done = TRUE;
         if(breakpoint) done = TRUE;
 
-    rc = read(STDIN_FILENO, &ch, 1);
-    if (rc == 1) {
-      printf("char 0x%02x \n", ch);
-      serial_in(ch);
-    }
+//     rc = read(STDIN_FILENO, &ch, 1);
+//     if (rc == 1) {
+//       printf("char 0x%02x \n", ch);
+//       serial_in(ch);
+//     }
 
-    rc = serial_out();
-    if(rc != NO_TX_DATA)
-        printf("%c", rc);
-  }
+//     rc = serial_out();
+//     if(rc != NO_TX_DATA)
+//         printf("%c", rc);
+   }
     sigint_restore();
     sentinel = FALSE;
-    tty_reset(STDIN_FILENO);
+//     tty_reset(STDIN_FILENO);
     printf("run complete at 0x%04x\n", em_cpu.pc);
 //     xregisters(arg);
 
@@ -389,11 +393,11 @@ int rc;
 //     printf("<<");
 //     xdis(arg);
     printf("%s\n", traceline);
-    rc = serial_out();
-    if(rc != NO_TX_DATA){
-        printf("%c", rc);
-  }
-return(0);
+//     rc = serial_out();
+//     if(rc != NO_TX_DATA){
+//         printf("%c", rc);
+//   }
+    return(0);
 }
 
 
@@ -761,7 +765,7 @@ void trace_print(int count)
     printf("%32s PC  A  X  Y  SP   Flags\n", " ");
 
     for(i=trace_tail; i!=trace_head; ) {
-//      printf("head=%i tail=%i %i \n", trace_head, trace_tail, i);
+      printf("head=%i tail=%i %i \n", trace_head, trace_tail, i);
         if(trace_head == trace_tail) break;
         if(trace_buffer[i][0]!='\0') printf("%s\n", trace_buffer[i]);
         if(i++ == TRACEMAX-1) i=0;

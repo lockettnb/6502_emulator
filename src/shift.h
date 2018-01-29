@@ -55,9 +55,9 @@
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++
      case LSR_AB: // LSR nn
             addr = AB(0);
+            SETFLAG(C_FLAG, mread(addr) & 0x01);
             db = mread(addr) >> 1;
             mwrite(addr, db);
-            SETFLAG(C_FLAG, mread(addr) & 0x01);
             SETFLAG(Z_FLAG, mread(addr)==0 );
             SETFLAG(N_FLAG, FALSE);
             cpu.pc+=3;
@@ -65,27 +65,27 @@
 
      case LSR_ZP: // LSR n
             addr = ZP(0);
+            SETFLAG(C_FLAG, mread(addr) & 0x01);
             db = mread(addr) >> 1;
             mwrite(addr, db);
-            SETFLAG(C_FLAG, mread(addr) & 0x01);
             SETFLAG(Z_FLAG, mread(addr)==0 );
             SETFLAG(N_FLAG, FALSE);
             cpu.pc+=2;
             break;
 
      case LSR_ACC: // LSR A 
+            SETFLAG(C_FLAG, cpu.a & 0x01);
             cpu.a = cpu.a >> 1;
             SETFLAG(Z_FLAG, cpu.a==0 );
-            SETFLAG(C_FLAG, cpu.a & 0x01);
             SETFLAG(N_FLAG, FALSE);
             cpu.pc+=1;
             break;
 
      case LSR_ZPX: // LSR n,X
             addr = ZP(cpu.x);
+            SETFLAG(C_FLAG, mread(addr) & 0x01);
             db = mread(addr) >> 1;
             mwrite(addr, db);
-            SETFLAG(C_FLAG, mread(addr) & 0x01);
             SETFLAG(Z_FLAG, mread(addr)==0 );
             SETFLAG(N_FLAG, FALSE);
             cpu.pc+=2;
@@ -93,9 +93,9 @@
 
      case LSR_ABX: // LSR nn,X
             addr = AB(cpu.x);
+            SETFLAG(C_FLAG, mread(addr) & 0x01);
             db = mread(addr) >> 1;
             mwrite(addr, db);
-            SETFLAG(C_FLAG, mread(addr) & 0x01);
             SETFLAG(Z_FLAG, mread(addr)==0 );
             SETFLAG(N_FLAG, FALSE);
             cpu.pc+=3;
