@@ -43,8 +43,12 @@
 #define AB(offset)   offset + mread(cpu.pc+1) + (mread(cpu.pc+2)<<8)
 #define IN           mread(cpu.pc+1) + (mread(cpu.pc+2)<<8)
 #define ZP(offset)   (offset + mread(cpu.pc+1)) & 0x00ff
-#define IDX          mread(ZP(x)) + mread(ZP(x)+1) <<8
-#define IDY          cpu.y + mread(ZP(0)+(mread(ZP(0)+1)<<8)) 
+#define IDX          mread(ZP(cpu.x)) + (mread(ZP(cpu.x+1)) <<8)
+#define IDY          cpu.y + mread(ZP(0)+(mread(ZP(1))<<8)) 
+
+// NO #define IDX          mread(ZP(x)) + (mread(ZP(x)+1) <<8)
+// NO #define IDY          cpu.y + mread(ZP(0)+(mread(ZP(0)+1)<<8)) 
+// #define IDX         idx()
 
 typedef enum { 
     cpu_registers,

@@ -28,8 +28,8 @@
                 cpu.pc+=2;
                 break;
 
-     case CMP_INX: //CMP (n,X) -- indexed indirect
-                addr = INX; 
+     case CMP_IDX: //CMP (n,X) -- indexed indirect
+                addr = IDX; 
                 db = mread(addr);
                 SETFLAG(Z_FLAG, cpu.a == db) ;
                 SETFLAG(N_FLAG, (cpu.a-db) & 0x80);
@@ -37,8 +37,8 @@
                 cpu.pc+=2;
                 break;
 
-     case CMP_INY: //CMP (n),Y -- indirect indexed 
-                addr = INY; 
+     case CMP_IDY: //CMP (n),Y -- indirect indexed 
+                addr = IDY; 
                 db = mread(addr);
                 SETFLAG(Z_FLAG, cpu.a == db) ;
                 SETFLAG(N_FLAG, (cpu.a-db) & 0x80);

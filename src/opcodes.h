@@ -4,7 +4,7 @@
 //------------------------------------------------------------------
 // Op Codes Values
 #define BRK     0x00
-#define ORA_INX 0x01
+#define ORA_IDX 0x01
 #define ORA_ZP  0x05
 #define ASL_ZP  0x06
 #define PHP     0x08
@@ -14,7 +14,7 @@
 #define ASL_AB  0x0E
 
 #define BPL_REL 0x10
-#define ORA_INY 0x11
+#define ORA_IDY 0x11
 #define ORA_ZPX 0x15
 #define ASL_ZPX 0x16
 #define CLC     0x18
@@ -23,7 +23,7 @@
 #define ASL_ABX 0x1E
 
 #define JSR_AB  0x20
-#define AND_INX 0x21
+#define AND_IDX 0x21
 #define BIT_ZP  0x24
 #define AND_ZP  0x25
 #define ROL_ZP  0x26
@@ -35,7 +35,7 @@
 #define ROL_AB  0x2E
 
 #define BMI_REL 0x30
-#define AND_INY 0x31
+#define AND_IDY 0x31
 #define AND_ZPX 0x35
 #define ROL_ZPX 0x36
 #define SEC     0x38
@@ -44,7 +44,7 @@
 #define ROL_ABX 0x3E
 
 #define RTI     0x40
-#define EOR_INX 0x41
+#define EOR_IDX 0x41
 #define EOR_ZP  0x45
 #define LSR_ZP  0x46
 #define PHA     0x48
@@ -55,7 +55,7 @@
 #define LSR_AB  0x4E
 
 #define BVC_REL 0x50
-#define EOR_INY 0x51
+#define EOR_IDY 0x51
 #define EOR_ZPX 0x55
 #define LSR_ZPX 0x56
 #define CLI     0x58
@@ -64,7 +64,7 @@
 #define LSR_ABX 0x5E
 
 #define RTS     0x60
-#define ADC_INX 0x61
+#define ADC_IDX 0x61
 #define ADC_ZP  0x65
 #define ROR_ZP  0x66
 #define PLA     0x68
@@ -75,7 +75,7 @@
 #define ROR_AB  0x6E
 
 #define BVS_REL 0x70
-#define ADC_INY 0x71
+#define ADC_IDY 0x71
 #define ADC_ZPX 0x75
 #define ROR_ZPX 0x76
 #define SEI     0x78
@@ -83,7 +83,7 @@
 #define ADC_ABX 0x7D
 #define ROR_ABX 0x7E
 
-#define STA_INX 0x81
+#define STA_IDX 0x81
 #define STY_ZP  0x84
 #define STA_ZP  0x85
 #define STX_ZP  0x86
@@ -94,7 +94,7 @@
 #define STX_AB  0x8E
 
 #define BCC_REL 0x90
-#define STA_INY 0x91
+#define STA_IDY 0x91
 #define STY_ZPX 0x94
 #define STA_ZPX 0x95
 #define STX_ZPY 0x96
@@ -104,7 +104,7 @@
 #define STA_ABX 0x9D
 
 #define LDY_IMM 0xA0
-#define LDA_INX 0xA1
+#define LDA_IDX 0xA1
 #define LDX_IMM 0xA2
 #define LDY_ZP  0xA4
 #define LDA_ZP  0xA5
@@ -117,7 +117,7 @@
 #define LDX_AB  0xAE
 
 #define BCS_REL 0xB0
-#define LDA_INY 0xB1
+#define LDA_IDY 0xB1
 #define LDY_ZPX 0xB4
 #define LDA_ZPX 0xB5
 #define LDX_ZPY 0xB6
@@ -129,7 +129,7 @@
 #define LDX_ABY 0xBE
 
 #define CPY_IMM 0xC0
-#define CMP_INX 0xC1
+#define CMP_IDX 0xC1
 #define CPY_ZP  0xC4
 #define CMP_ZP  0xC5
 #define DEC_ZP  0xC6
@@ -141,7 +141,7 @@
 #define DEC_AB  0xCE
 
 #define BNE_REL 0xD0
-#define CMP_INY 0xD1
+#define CMP_IDY 0xD1
 #define CMP_ZPX 0xD5
 #define DEC_ZPX 0xD6
 #define CLD     0xD8
@@ -150,7 +150,7 @@
 #define DEC_ABX 0xDE
 
 #define CPX_IMM 0xE0
-#define SBC_INX 0xE1
+#define SBC_IDX 0xE1
 #define CPX_ZP  0xE4
 #define SBC_ZP  0xE5
 #define INC_ZP  0xE6
@@ -162,7 +162,7 @@
 #define INC_AB  0xEE
 
 #define BEQ_REL 0xF0
-#define SBC_INY 0xF1
+#define SBC_IDY 0xF1
 #define SBC_ZPX 0xF5
 #define INC_ZPX 0xF6
 #define SED     0xF8

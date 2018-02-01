@@ -765,7 +765,6 @@ void trace_print(int count)
     printf("%32s PC  A  X  Y  SP   Flags\n", " ");
 
     for(i=trace_tail; i!=trace_head; ) {
-      printf("head=%i tail=%i %i \n", trace_head, trace_tail, i);
         if(trace_head == trace_tail) break;
         if(trace_buffer[i][0]!='\0') printf("%s\n", trace_buffer[i]);
         if(i++ == TRACEMAX-1) i=0;

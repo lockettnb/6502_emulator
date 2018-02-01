@@ -58,6 +58,18 @@ e6fee4fed0f5a9038d00fca9b18d00fcb99aff300e99c6d0ae01fed00320\
 0bfec8d0edad01fed0052000feb00320edfec948f00ac944d00c2000ff4c\
 00224c00fd2000ff6cfcfeea3001a0ffc001";
 
+int idx(void)
+{
+int addr, bal, adl, adh;
+
+    bal = mread(cpu.pc+1);
+    adl = ZP(cpu.x);
+    adh = ZP(cpu.x+1);
+    addr =mread(ZP(cpu.x)) + (mread(ZP(cpu.x+1)) <<8);
+
+    printf(">>IDX bal %02x adl=%02x adh=%02x addr=%04x\n", bal, adl, adh, addr);
+    return addr;
+}
 
 //******************************************************************
 //

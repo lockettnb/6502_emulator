@@ -12,6 +12,7 @@
 
      case LDA_AB: //LDA nn -- absolute
                 addr = AB(0); 
+        printf("PC %04x address %04x\n", cpu.pc, addr);
                 cpu.a = mread(addr);
                 SETFLAG(Z_FLAG, cpu.a==0) ;
                 SETFLAG(N_FLAG, cpu.a & 0x80);
@@ -20,22 +21,25 @@
 
      case LDA_ZP: //LDA n -- zero page 
                 addr = ZP(0);
+        printf("PC %04x address %04x\n", cpu.pc, addr);
                 cpu.a = mread(addr);
                 SETFLAG(Z_FLAG, cpu.a==0) ;
                 SETFLAG(N_FLAG, cpu.a & 0x80);
                 cpu.pc+=2;
                 break;
 
-     case LDA_INX: //LDA (n,X) -- indexed indirect
-                addr = INX; 
+     case LDA_IDX: //LDA (n,X) -- indexed indirect
+                addr = IDX; 
+        printf("IDX PC %04x address %04x\n", cpu.pc, addr);
                 cpu.a = mread(addr);
                 SETFLAG(Z_FLAG, cpu.a==0) ;
                 SETFLAG(N_FLAG, cpu.a & 0x80);
                 cpu.pc+=2;
                 break;
 
-     case LDA_INY: //LDA (n),Y -- indirect indexed 
+     case LDA_IDY: //LDA (n),Y -- indirect indexed 
                 addr = INY; 
+        printf("PC %04x address %04x\n", cpu.pc, addr);
                 cpu.a = mread(addr);
                 SETFLAG(Z_FLAG, cpu.a==0) ;
                 SETFLAG(N_FLAG, cpu.a & 0x80);
@@ -44,6 +48,7 @@
 
      case LDA_ZPX: //LDA n,X -- zero page X 
                 addr = ZP(cpu.x); 
+        printf("PC %04x address %04x\n", cpu.pc, addr);
                 cpu.a = mread(addr);
                 SETFLAG(Z_FLAG, cpu.a==0) ;
                 SETFLAG(N_FLAG, cpu.a & 0x80);
@@ -52,6 +57,7 @@
 
      case LDA_ABX: //LDA nn,X -- absolute X 
                 addr = AB(cpu.x) ;
+        printf("PC %04x address %04x\n", cpu.pc, addr);
                 cpu.a = mread(addr);
                 SETFLAG(Z_FLAG, cpu.a==0) ;
                 SETFLAG(N_FLAG, cpu.a & 0x80);
@@ -60,6 +66,7 @@
 
      case LDA_ABY: //LDA nn,Y -- absolute Y 
                 addr = AB(cpu.y); 
+        printf("PC %04x address %04x\n", cpu.pc, addr);
                 cpu.a = mread(addr);
                 SETFLAG(Z_FLAG, cpu.a==0) ;
                 SETFLAG(N_FLAG, cpu.a & 0x80);
@@ -166,13 +173,13 @@
                 cpu.pc+=2;
                 break;
 
-     case STA_INX: //STA (n,X) -- indexed indirect
-                addr = INX; 
+     case STA_IDX: //STA (n,X) -- indexed indirect
+                addr = IDX; 
                 mwrite(addr, cpu.a);
                 cpu.pc+=2;
                 break;
 
-     case STA_INY: //STA (n),Y -- indirect indexed 
+     case STA_IDY: //STA (n),Y -- indirect indexed 
                 addr = INY; 
                 mwrite(addr, cpu.a);
                 cpu.pc+=2;

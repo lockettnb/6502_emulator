@@ -28,13 +28,13 @@ case ADC_ZP: //ADC n -- zero page
         cpu.pc+=2;
         goto ADD_WITH_CARRY;
 
-case ADC_INX: //ADC (n,X) -- indexed indirect
-        addr = INX;
+case ADC_IDX: //ADC (n,X) -- indexed indirect
+        addr = IDX;
         cpu.pc+=2;
         goto ADD_WITH_CARRY;
 
-case ADC_INY: //ADC (n),Y -- indirect indexed 
-        addr = INY;
+case ADC_IDY: //ADC (n),Y -- indirect indexed 
+        addr = IDY;
         cpu.pc+=2;
         goto ADD_WITH_CARRY;
 
@@ -105,13 +105,13 @@ case SBC_ZP:
         cpu.pc+=2;
         goto SUBTRACT_WITH_CARRY;
 
-case SBC_INX:
-        addr = INX;
+case SBC_IDX:
+        addr = IDX;
         cpu.pc+=2;
         goto SUBTRACT_WITH_CARRY;
 
-case SBC_INY:
-        addr = INY;
+case SBC_IDY:
+        addr = IDY;
         cpu.pc+=2;
         goto SUBTRACT_WITH_CARRY;
 

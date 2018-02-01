@@ -321,6 +321,6 @@ void start_terminal(void)
     fgets(buf, 255, shcmd);
     if(strcmp(buf, "") ==0) {
         printf("starting ositerm\n");
-        system("mate-terminal -e /home/john/src/6502_emulator/build/ositerm &");
+        system("mate-terminal --geometry 80x24+10+10 -e /home/john/src/6502_emulator/build/ositerm &");
     }
  }

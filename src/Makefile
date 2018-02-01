@@ -14,7 +14,7 @@ MANPATH=/usr/local/man/man1
 
 SUBOBJS  = linenoise.o dumbterm.o
 SRCS	= disassembler.c emulator.c utils.c monitor.c floppy.c
-BIN		= $(addprefix $(BUILD)/,m6502)
+BIN		= $(addprefix $(BUILD)/,osi6502)
 OBJS	= $(addprefix $(BUILD)/, disassembler.o emulator.o utils.o monitor.o console.o floppy.o linenoise.o filecomp.o)
 MANSRC  = 
 MANFILE	= 
@@ -22,9 +22,9 @@ HEAD	=
 LIBS	= -lreadline
 INCS 	:= $(wildcard *.h)
 
-all: m6502  ositerm
+all: osi6502  ositerm
 
-m6502: $(SRCS) $(OBJS) $(INCS) 
+osi6502: $(SRCS) $(OBJS) $(INCS) 
 	$(CC) -o $(BIN) $(CFLAGS) $(OBJS) $(LIBS)
 
 $(BUILD)/console.o: console/console.c console/console.h

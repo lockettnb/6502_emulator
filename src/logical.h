@@ -25,16 +25,16 @@
                 cpu.pc+=2;
                 break;
 
-     case AND_INX: //AND (n,X) -- indexed indirect
-                addr = INX; 
+     case AND_IDX: //AND (n,X) -- indexed indirect
+                addr = IDX; 
                 cpu.a = cpu.a & mread(addr);
                 SETFLAG(Z_FLAG, cpu.a==0) ;
                 SETFLAG(N_FLAG, cpu.a & 0x80);
                 cpu.pc+=2;
                 break;
 
-     case AND_INY: //AND (n),Y -- indirect indexed 
-                addr = INY; 
+     case AND_IDY: //AND (n),Y -- indirect indexed 
+                addr = IDY; 
                 cpu.a = cpu.a & mread(addr);
                 SETFLAG(Z_FLAG, cpu.a==0) ;
                 SETFLAG(N_FLAG, cpu.a & 0x80);
@@ -89,16 +89,16 @@
                 cpu.pc+=2;
                 break;
 
-     case EOR_INX: //EOR (n,X) -- indexed indirect
-                addr = INX; 
+     case EOR_IDX: //EOR (n,X) -- indexed indirect
+                addr = IDX; 
                 cpu.a = cpu.a ^ mread(addr);
                 SETFLAG(Z_FLAG, cpu.a==0) ;
                 SETFLAG(N_FLAG, cpu.a & 0x80);
                 cpu.pc+=2;
                 break;
 
-     case EOR_INY: //EOR (n),Y -- indirect indexed 
-                addr = INY; 
+     case EOR_IDY: //EOR (n),Y -- indirect indexed 
+                addr = IDY; 
                 cpu.a = cpu.a ^ mread(addr);
                 SETFLAG(Z_FLAG, cpu.a==0) ;
                 SETFLAG(N_FLAG, cpu.a & 0x80);
@@ -154,16 +154,16 @@
                 cpu.pc+=2;
                 break;
 
-     case ORA_INX: //ORA (n,X) -- indexed indirect
-                addr = INX; 
+     case ORA_IDX: //ORA (n,X) -- indexed indirect
+                addr = IDX; 
                 cpu.a = cpu.a | mread(addr);
                 SETFLAG(Z_FLAG, cpu.a==0) ;
                 SETFLAG(N_FLAG, cpu.a & 0x80);
                 cpu.pc+=2;
                 break;
 
-     case ORA_INY: //ORA (n),Y -- indirect indexed 
-                addr = INY; 
+     case ORA_IDY: //ORA (n),Y -- indirect indexed 
+                addr = IDY; 
                 cpu.a = cpu.a | mread(addr);
                 SETFLAG(Z_FLAG, cpu.a==0) ;
                 SETFLAG(N_FLAG, cpu.a & 0x80);
